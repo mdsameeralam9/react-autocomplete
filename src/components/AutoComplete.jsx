@@ -1,10 +1,12 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 const AutoComplete = () => {
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(null);
+
+  const controller = useRef(null);
 
   const handleChange = (e) => {
     setSearch(e.target.value);
@@ -13,11 +15,34 @@ const AutoComplete = () => {
   // simple debounce so we don’t call the API on every keystroke
   const debounced = useMemo(() => {
     let t;
-    return (value, cb, delay = 300) => {
+    return (value, cb, delay = 100) => {
       clearTimeout(t);
       t = setTimeout(() => cb(value), delay);
     };
   }, []);
+
+  const doSearch = async (q) => {
+    controller.current = new AbortController();
+    try {
+      setLoading(true);
+      setErr(null);
+      const url =
+        "https://en.wikipedia.org/w/api.php" +
+        `?action=query&list=search&format=json&utf8=&srlimit=10` +
+        `&origin=*` + // CORS fix
+        `&srsearch=${encodeURIComponent(q)}`;
+      const response = await fetch(url, {signal: controller.current.signal});
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const json = await response.json();
+      const items = json?.query?.search ?? [];
+      setResults(items);
+    } catch (e) {
+      setErr(e.message || "Request failed");
+      setResults([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!search.trim()) {
@@ -26,29 +51,11 @@ const AutoComplete = () => {
       return;
     }
 
-    const doSearch = async (q) => {
-      try {
-        setLoading(true);
-        setErr(null);
-        const url =
-          "https://en.wikipedia.org/w/api.php" +
-          `?action=query&list=search&format=json&utf8=&srlimit=10` +
-          `&origin=*` + // CORS fix
-          `&srsearch=${encodeURIComponent(q)}`;
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const json = await response.json();
-        const items = json?.query?.search ?? [];
-        setResults(items);
-      } catch (e) {
-        setErr(e.message || "Request failed");
-        setResults([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     debounced(search, doSearch);
+
+    return () => {
+      controller.current?.abort();
+    };
   }, [search, debounced]);
 
   return (
@@ -76,7 +83,9 @@ const AutoComplete = () => {
                 <a
                   key={item.pageid}
                   className="data hover:underline"
-                  href={`https://en.wikipedia.org/wiki/${encodeURIComponent(item.title)}`}
+                  href={`https://en.wikipedia.org/wiki/${encodeURIComponent(
+                    item.title
+                  )}`}
                   target="_blank"
                   rel="noreferrer"
                   // snippet is HTML; render safely by stripping tags or using it carefully
