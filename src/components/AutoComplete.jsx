@@ -31,12 +31,14 @@ const AutoComplete = () => {
         `?action=query&list=search&format=json&utf8=&srlimit=10` +
         `&origin=*` + // CORS fix
         `&srsearch=${encodeURIComponent(q)}`;
-      const response = await fetch(url, {signal: controller.current.signal});
+      const response = await fetch(url, { signal: controller.current.signal });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const json = await response.json();
       const items = json?.query?.search ?? [];
       setResults(items);
     } catch (e) {
+      console.log(e);
+      if (e.name === "AbortError") return;
       setErr(e.message || "Request failed");
       setResults([]);
     } finally {
@@ -73,7 +75,7 @@ const AutoComplete = () => {
       {search && (
         <div className="w-full dataCompone border-2 rounded p-2 scroll-auto border-t-0 mt--1">
           {loading && <p className="text-sm text-gray-500">Loading…</p>}
-          {err && <p className="text-sm text-red-600">{err}</p>}
+          {!loading && err && <p className="text-sm text-red-600">{err}</p>}
           {!loading && !err && (
             <div className="flex flex-col gap-2">
               {results.length === 0 && (
