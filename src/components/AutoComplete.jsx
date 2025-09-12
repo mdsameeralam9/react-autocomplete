@@ -71,41 +71,39 @@ const AutoComplete = () => {
   }, [search, debounced]);
 
   return (
-    <div className="w-[500px]">
-      <div className="inputWrap">
-        <input
-          value={search}
-          type="text"
-          placeholder="Search"
-          className="border-2 w-full rounded px-2"
-          onChange={handleChange}
-        />
-      </div>
-
+    <div className="w-full max-w-md">
+      <input
+        value={search}
+        type="text"
+        placeholder="Search Wikipedia..."
+        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        onChange={handleChange}
+      />
       {search && (
-        <div className="w-full dataCompone border-2 rounded p-2 scroll-auto border-t-0 mt--1">
-          {loading && <p className="text-sm text-gray-500">Loading…</p>}
-          {!loading && err && <p className="text-sm text-red-600">{err}</p>}
+        <div>
+          {loading && <div className="text-sm text-gray-500 p-2">Loading…</div>}
+          {!loading && err && <div className="text-sm text-red-600 p-2">{err}</div>}
           {!loading && !err && results.length === 0 && (
-            <p className="text-sm text-gray-500">No results</p>
+            <div className="text-sm text-gray-500 p-2">Sorry no results found</div>
           )}
           {!loading && !err && results.length > 0 && (
-            <div className="flex flex-col gap-2">
+            <ul className="border border-gray-300 border-t-0 rounded-b-md bg-white shadow-lg max-h-60 overflow-y-auto">
               {results.map((item) => (
-                <a
-                  key={item.pageid}
-                  className="data hover:underline"
-                  href={`https://en.wikipedia.org/wiki/${encodeURIComponent(
-                    item.title
-                  )}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  title={item.snippet.replace(/<[^>]*>?/gm, "")}
-                >
-                  {item.title}
-                </a>
+                <li key={item.pageid} className="px-3 py-2 cursor-pointer hover:bg-gray-100 text-gray-900">
+                  <a
+                    className="block hover:underline"
+                    href={`https://en.wikipedia.org/wiki/${encodeURIComponent(
+                      item.title
+                    )}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    title={item.snippet.replace(/<[^>]*>?/gm, "")}
+                  >
+                    {item.title}
+                  </a>
+                </li>
               ))}
-            </div>
+            </ul>
           )}
         </div>
       )}

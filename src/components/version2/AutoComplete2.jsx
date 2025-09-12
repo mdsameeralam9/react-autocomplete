@@ -12,23 +12,22 @@ export default function AutoComplete2() {
       { signal }
     );
   return (
-    <div className="wrapper">
+    <div className="w-full max-w-md">
       <SearchBox
         id="personName"
         name="personName"
         label="Enter Person Name"
-        placeholder="Enter your fav star war char"
+        placeholder="Search Wikipedia..."
         autoComplete
         styles={{
-          label: "label",
-          input: "input",
+          input: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
         }}
         debounceWait={400}
         listBox={(items, activeIndex) => (
           <ListBox items={items} activeIndex={activeIndex} />
         )}
-        noItemMessage={() => <div>Sorry no person found</div>}
-        errorMessage={() => <div>Something went wrong</div>}
+        noItemMessage={() => <div className="text-sm text-gray-500 p-2">Sorry no results found</div>}
+        errorMessage={() => <div className="text-sm text-red-600 p-2">Something went wrong</div>}
         transformData={transformData}
         promise={dataPromise}
       />

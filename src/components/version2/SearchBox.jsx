@@ -60,10 +60,10 @@ const SearchBox = ({
   };
   return (
     <>
-      <label className={styles.label} for={name}>
+      {/* <label className={styles.label} for={name}>
         {label}
       </label>
-      <br />
+      <br /> */}
       <input
         name={name}
         className={styles.input}
