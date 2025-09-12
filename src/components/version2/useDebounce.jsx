@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 
-const useDebounce = () => {
-  return (
-    <div>useDebounce</div>
-  )
-}
+const useDebounce = (query, wait = 1000) => {
+  const [debouncedQuery, setDebouncedQuery] = useState(query);
 
-export default useDebounce
+  useEffect(() => {
+    let timerId = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, wait);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [query, wait]);
+
+  debouncedQuery;
+};
+
+export default useDebounce;
