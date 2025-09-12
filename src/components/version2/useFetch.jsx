@@ -1,14 +1,12 @@
 import { useEffect, useState, useCallback } from "react";
-import useDebounce from "./useDebounce";
 
-const useFetchPromise = (
+const useFetch = (
   query,
   transformData,
   promise,
-  debounceWait,
   autoComplete
 ) => {
-  const delayQuery = useDebounce(query, debounceWait)
+ 
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
@@ -25,11 +23,11 @@ const useFetchPromise = (
         if (!signal.aborted) setError(e);
       }
     },
-    []
+    [query, promise]
   );
 
   useEffect(() => {
-    if (!delayQuery || !autoComplete) {
+    if (!query || !autoComplete) {
       setData(null);
       setError(null);
       return;
@@ -37,14 +35,14 @@ const useFetchPromise = (
     const controller = new AbortController();
     const signal = controller.signal;
 
-    fetchData(delayQuery, transformData, signal);
+    fetchData(query, transformData, signal);
 
     return () => {
       controller.abort();
     };
-  }, [delayQuery, transformData, fetchData, autoComplete]);
+  }, [fetchData, autoComplete]);
 
   return [data, setData, error];
 };
 
-export default useFetchPromise;
+export default useFetch;

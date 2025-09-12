@@ -1,5 +1,6 @@
 import { useState } from "react";
-import useFetchPromise from "./useFetchPromise";
+import useFetch from "./useFetch";
+import useDebounce from "./useDebounce";
 const SearchBox = ({
   id,
   name,
@@ -17,11 +18,13 @@ const SearchBox = ({
   const [query, setQuery] = useState("");
   const [isAutoComplete, setIsAutoComplete] = useState(autoComplete);
   const [activeIndex, setActiveIndex] = useState(null);
-  const [data, setData, error] = useFetchPromise(
-    query,
+
+  const debouncedQuery = useDebounce(query, debounceWait)
+
+  const [data, setData, error] = useFetch(
+    debouncedQuery,
     transformData,
     promise,
-    debounceWait,
     isAutoComplete
   );
   const handleChange = (event) => {
