@@ -1,8 +1,8 @@
 import SearchBox from "./searchBox";
 import ListBox from "./listBox";
-const maxItems = 5;
+const maxItems = 10;
 export default function AutoComplete2() {
-  const transformData = (data) => data.results.slice(0, maxItems);
+  const transformData = (data) => data.slice(0, maxItems);
   const dataPromise = async (query, signal) =>
     await fetch(
       "https://en.wikipedia.org/w/api.php" +

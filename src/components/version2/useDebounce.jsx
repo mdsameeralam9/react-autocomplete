@@ -13,7 +13,7 @@ const useDebounce = (query, wait = 1000) => {
     };
   }, [query, wait]);
 
-  debouncedQuery;
+  return debouncedQuery;
 };
 
 export default useDebounce;

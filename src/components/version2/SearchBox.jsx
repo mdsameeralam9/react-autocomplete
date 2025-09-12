@@ -36,8 +36,8 @@ const SearchBox = ({
     if (keyCode === 13) {
       // user enter
       if (activeIndex === null) return;
-      console.log(data[activeIndex].name);
-      setQuery(data[activeIndex].name);
+      console.log(data[activeIndex].title);
+      setQuery(data[activeIndex].title);
       setData(null);
       setActiveIndex(null);
       setIsAutoComplete(false);

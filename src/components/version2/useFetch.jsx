@@ -17,13 +17,13 @@ const useFetch = (
         if (!response.ok) throw new Error(response.statusText);
         const data = await response.json();
         console.log(data);
-        setData(transformData(data));
+        setData(transformData(data.query.search));
       } catch (e) {
         console.log(e);
         if (!signal.aborted) setError(e);
       }
     },
-    [query, promise]
+    [promise]
   );
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const useFetch = (
     return () => {
       controller.abort();
     };
-  }, [fetchData, autoComplete]);
+  }, [query, transformData, fetchData, autoComplete]);
 
   return [data, setData, error];
 };
