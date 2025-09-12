@@ -1,4 +1,4 @@
-const ListBox = ({ items, activeIndex }) => {
+const ListItem = ({ items, activeIndex }) => {
   return (
     <ul className="border border-gray-300 border-t-0 rounded-b-md bg-white shadow-lg max-h-60 overflow-y-auto">
       {items.map((item, index) => (
@@ -23,4 +23,4 @@ const ListBox = ({ items, activeIndex }) => {
   );
 };
 
-export default ListBox;
+export default ListItem;

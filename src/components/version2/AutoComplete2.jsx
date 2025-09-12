@@ -1,5 +1,5 @@
-import SearchBox from "./searchBox";
-import ListBox from "./listBox";
+import SearchInput from "./SearchInput";
+import ListItem from "./ListItem";
 const maxItems = 10;
 export default function AutoComplete2() {
   const transformData = (data) => data.slice(0, maxItems);
@@ -13,7 +13,7 @@ export default function AutoComplete2() {
     );
   return (
     <div className="w-full max-w-md">
-      <SearchBox
+      <SearchInput
         id="personName"
         name="personName"
         label="Enter Person Name"
@@ -24,7 +24,7 @@ export default function AutoComplete2() {
         }}
         debounceWait={400}
         listBox={(items, activeIndex) => (
-          <ListBox items={items} activeIndex={activeIndex} />
+          <ListItem items={items} activeIndex={activeIndex} />
         )}
         noItemMessage={() => <div className="text-sm text-gray-500 p-2">Sorry no results found</div>}
         errorMessage={() => <div className="text-sm text-red-600 p-2">Something went wrong</div>}

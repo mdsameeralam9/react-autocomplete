@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useFetch from "./useFetch";
 import useDebounce from "./useDebounce";
-const SearchBox = ({
+const SearchInput = ({
   id,
   name,
   label,
@@ -81,4 +81,4 @@ const SearchBox = ({
   );
 };
 
-export default SearchBox;
+export default SearchInput;
