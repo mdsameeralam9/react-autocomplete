@@ -34,9 +34,7 @@ const useFetch = (
     }
     const controller = new AbortController();
     const signal = controller.signal;
-
     fetchData(query, transformData, signal);
-
     return () => {
       controller.abort();
     };
