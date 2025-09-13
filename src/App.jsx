@@ -2,7 +2,6 @@ import AutoComplete from "./components/AutoComplete";
 import AutoComplete2 from "./components/version2/AutoComplete2";
 
 function App() {
-
   return (
     <div className="flex flex-col items-center w-full h-screen p-8">
       <h1 className="text-3xl font-bold mb-8">Auto Search Functionality</h1>
