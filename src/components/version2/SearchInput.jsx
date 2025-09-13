@@ -4,7 +4,6 @@ import useDebounce from "./useDebounce";
 const SearchInput = ({
   id,
   name,
-  label,
   placeholder,
   autoComplete,
   styles,
@@ -60,10 +59,6 @@ const SearchInput = ({
   };
   return (
     <>
-      {/* <label className={styles.label} for={name}>
-        {label}
-      </label>
-      <br /> */}
       <input
         name={name}
         className={styles.input}

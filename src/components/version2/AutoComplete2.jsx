@@ -16,7 +16,6 @@ export default function AutoComplete2() {
       <SearchInput
         id="personName"
         name="personName"
-        label="Enter Person Name"
         placeholder="Search Wikipedia..."
         autoComplete
         styles={{
